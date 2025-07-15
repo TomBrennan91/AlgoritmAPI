@@ -20,24 +20,28 @@ def best_hand(hands_str: list[str]) -> list[str]:
     """
     hands = {}
     best_hand_type = HandType.HIGH_CARD.value
+
+
     for hand_str in hands_str:
         card_strs = hand_str.split(" ")
-        hand = []
-        for card_str in card_strs:
-            hand.append(Card(card_str))
-        hand = list(map(Card, card_strs))
+        hand = [Card(card_str) for card_str in card_strs]
+
+        # sort hands by rank to make them easier to classify and compare
         hand.sort(key=lambda card: card.rank)
+
         hand_type = get_hand_type(hand)
-        if int(hand_type.value) > best_hand_type:
+        if hand_type.value > best_hand_type:
             best_hand_type = hand_type
 
+        # store all this information in a dict to make it easier to keep track of.
         hands[hand_str] = [hand_type, hand]
 
+    # eliminate all the elements in the dict where the hand type isnt as strong as the best hand type
     best_hands = {k: v for k, v in hands.items() if v[0].value == best_hand_type}
 
     highest_ranked_best_hands = []
     for high_card_idx in range (4, -1, -1):
-        # if there are multiple each of the highest value type, return the one with the highest rank.
+        # if there are multiple each of the highest value type, return the one with the highest ranked cards.
 
         highest_card = 0
         highest_ranked_best_hands = []
@@ -50,13 +54,19 @@ def best_hand(hands_str: list[str]) -> list[str]:
 
         best_hands = {k: v for k, v in best_hands.items() if k in highest_ranked_best_hands}
 
+        # if we have a single winning hand, return it, otherwise continue to compare the next highest ranked card.
         if len(highest_ranked_best_hands) == 1:
             return highest_ranked_best_hands
 
+    # if we have reached here, we have multiple hands of the same type and identical rankings of cards.
     return highest_ranked_best_hands
 
 
 def get_hand_type(hand) -> HandType:
+    """
+    :param hand: the hand that we want to determine the hand type
+    :return: an Enum representing the strongest poker category that the hand conforms to.
+    """
     if is_flush(hand) and is_straight(hand):
         return HandType.STRAIGHT_FLUSH
 
@@ -85,9 +95,14 @@ def get_hand_type(hand) -> HandType:
             return HandType.TWO_PAIR
         return HandType.PAIR
 
+    # if the Hand doesn't conform to any of the above hand types, it is simply a high card.
     return HandType.HIGH_CARD
 
 def is_flush(hand : list[Card]) -> bool:
+    """
+    :param hand: list of Cards
+    :return: True if the hand is a flush
+    """
     suit = hand[0].suit
     for card in hand[1:]:
         if card.suit != suit:
@@ -95,6 +110,10 @@ def is_flush(hand : list[Card]) -> bool:
     return True
 
 def is_straight(hand : list[Card]) -> bool:
+    """
+    :param hand: list of Cards in ascending order of rank (aces high)
+    :return: True if the hand is a straight
+    """
     prev_rank = hand[0].rank
     for card in hand[1:]:
         if card.rank != prev_rank + 1:
