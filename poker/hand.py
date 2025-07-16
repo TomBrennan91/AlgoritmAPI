@@ -7,6 +7,8 @@ class Hand:
     hand_str: str
     cards: list[Card]
     rank_count: Counter
+    sorted_count: list[int]
+    ranks_descending_importance: list[int]
     hand_type: HandType
     flush: bool
     straight: bool
@@ -15,7 +17,6 @@ class Hand:
         return f"Hand(hand_str={self.hand_str!r}, hand_type={self.hand_type.name}, cards={[str(card) for card in self.cards]})"
 
     def __init__(self, hand_str: str):
-        self.cards = None
         self.hand_str = hand_str
         card_strs = hand_str.split(" ")
         self.cards = [Card(card_str) for card_str in card_strs]
@@ -26,6 +27,8 @@ class Hand:
         self.flush = self.is_flush()
         self.straight = self.is_straight()
         self.rank_count = Counter([card.rank for card in self.cards])
+        self.sorted_count = sorted(self.rank_count.values(), reverse=True)
+        self.ranks_descending_importance = [rank for rank in sorted(self.rank_count, key=lambda k: (self.rank_count[k], k), reverse=True)]
         self.hand_type = self.get_hand_type()
 
 
@@ -36,12 +39,10 @@ class Hand:
         if self.flush and self.straight:
             return HandType.STRAIGHT_FLUSH
 
-        sorted_count = sorted(self.rank_count.values(), reverse = True)
-
-        if sorted_count[0] == 4:
+        if self.sorted_count[0] == 4:
             return HandType.FOUR
 
-        if sorted_count[0] == 3 and sorted_count[1] == 2:
+        if self.sorted_count[0] == 3 and self.sorted_count[1] == 2:
             return HandType.FULL_HOUSE
 
         if self.flush:
@@ -50,11 +51,11 @@ class Hand:
         if self.straight:
             return HandType.STRAIGHT
 
-        if sorted_count[0] == 3:
+        if self.sorted_count[0] == 3:
             return HandType.THREE
 
-        if sorted_count[0] == 2:
-            if sorted_count[1] == 2:
+        if self.sorted_count[0] == 2:
+            if self.sorted_count[1] == 2:
                 return HandType.TWO_PAIR
             return HandType.PAIR
 
