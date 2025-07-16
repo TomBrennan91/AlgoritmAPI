@@ -1,6 +1,8 @@
+import pprint
 from collections import Counter
-from poker.card import Card
 from enum import Enum
+
+from poker.card import Card
 
 class HandType(Enum):
     HIGH_CARD = 1
@@ -29,15 +31,28 @@ def best_hand(hands_str: list[str]) -> list[str]:
         # sort hands by rank to make them easier to classify and compare
         hand.sort(key=lambda card: card.rank)
 
-        hand_type = get_hand_type(hand)
-        if hand_type.value > best_hand_type:
+        hand_type = get_hand_type(hand).value
+        if hand_type > best_hand_type:
             best_hand_type = hand_type
 
         # store all this information in a dict to make it easier to keep track of.
         hands[hand_str] = [hand_type, hand]
 
-    # eliminate all the elements in the dict where the hand type isnt as strong as the best hand type
-    best_hands = {k: v for k, v in hands.items() if v[0].value == best_hand_type}
+    # # eliminate all the elements in the dict where the hand type isn't as strong as the best hand type
+    # best_hands = {k: v for k, v in hands.items() if v[0].value == best_hand_type}
+
+
+    pprint.pprint(hands)
+    best_hands = {}
+
+    print(best_hand_type)
+
+    for hand_str, hand_info in hands.items():
+        pprint.pprint(best_hand_type)
+        pprint.pprint(hand_info[0])
+        if hand_info[0] == best_hand_type:
+            best_hands[hand_str] = hand_info
+    pprint.pprint(best_hands)
 
     highest_ranked_best_hands = []
     for high_card_idx in range (4, -1, -1):
@@ -64,7 +79,7 @@ def best_hand(hands_str: list[str]) -> list[str]:
 
 def get_hand_type(hand) -> HandType:
     """
-    :param hand: the hand that we want to determine the hand type
+    :param hand: the hand that we want to determine the hand_type
     :return: an Enum representing the strongest poker category that the hand conforms to.
     """
     if is_flush(hand) and is_straight(hand):
@@ -73,7 +88,8 @@ def get_hand_type(hand) -> HandType:
     ranks = []
     for card in hand:
         ranks.append(card.rank)
-    rank_count = Counter(ranks)
+
+    rank_count = sorted(Counter(ranks).values(), reverse=True)
 
     if rank_count[0] == 4:
         return HandType.FOUR
