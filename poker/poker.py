@@ -133,8 +133,8 @@ def is_straight(hand : list[Card]) -> bool:
     prev_rank = hand[0].rank
     for card in hand[1:]:
         if card.rank != prev_rank + 1:
-            # There's a chance that th
-            if card.rank == 14 and hand[0].rank == 2 and prev_rank == 13:
+            # we need to account for the possibility of an ace-low straight
+            if card.rank == 14 and hand[0].rank == 2:
                 return True
             return False
         prev_rank = card.rank
