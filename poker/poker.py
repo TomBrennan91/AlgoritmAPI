@@ -23,7 +23,6 @@ def best_hand(hands_str: list[str]) -> list[str]:
     hands = {}
     best_hand_type = HandType.HIGH_CARD.value
 
-
     for hand_str in hands_str:
         card_strs = hand_str.split(" ")
         hand = [Card(card_str) for card_str in card_strs]
@@ -38,18 +37,12 @@ def best_hand(hands_str: list[str]) -> list[str]:
         # store all this information in a dict to make it easier to keep track of.
         hands[hand_str] = [hand_type, hand]
 
-    # # eliminate all the elements in the dict where the hand type isn't as strong as the best hand type
-    # best_hands = {k: v for k, v in hands.items() if v[0].value == best_hand_type}
-
-
     pprint.pprint(hands)
     best_hands = {}
 
     print(best_hand_type)
-
+    # eliminate all the elements in the dict where the hand type isn't as strong as the best hand type
     for hand_str, hand_info in hands.items():
-        pprint.pprint(best_hand_type)
-        pprint.pprint(hand_info[0])
         if hand_info[0] == best_hand_type:
             best_hands[hand_str] = hand_info
     pprint.pprint(best_hands)
@@ -135,6 +128,8 @@ def is_straight(hand : list[Card]) -> bool:
         if card.rank != prev_rank + 1:
             # we need to account for the possibility of an ace-low straight
             if card.rank == 14 and hand[0].rank == 2:
+                # mark the ace as low for the purposes of determining high-card later
+                card.rank = 1
                 return True
             return False
         prev_rank = card.rank
