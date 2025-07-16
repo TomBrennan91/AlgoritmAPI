@@ -2,6 +2,9 @@ class Card:
     rank : int = 0
     suit : str = 'X'
 
+    def __repr__(self):
+        return f"Card(rank={self.rank}, suit={self.suit!r})"
+
     def __init__(self, card_str: str):
         if len(card_str) < 2:
             raise ValueError("Card must be at least 2 characters")
