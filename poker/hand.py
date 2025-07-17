@@ -4,10 +4,32 @@ from poker.card import Card
 from poker.hand_type import HandType
 
 class Hand:
+    """
+    Represents a poker hand and provides functionalities to evaluate its type and characteristics.
+
+    This class models a hand of poker cards and determines its classification according to poker
+    rules. It provides methods to check specific hand properties such as whether the hand forms
+    a flush or a straight and calculates the poker hand type by analyzing the ranks and suits of
+    individual cards.
+
+    :ivar hand_str: The string representation of the hand.
+    :type hand_str: str
+    :ivar cards: A list of Card objects representing the cards in the hand.
+    :type cards: list[Card]
+    :ivar rank_count: A Counter object tracking the occurrence of each rank in the hand.
+    :type rank_count: Counter
+    :ivar ranks_descending_importance: A list of ranks sorted by their significance (frequency and value).
+    :type ranks_descending_importance: list[int]
+    :ivar hand_type: The type of poker hand as determined by poker rules (e.g., flush, straight).
+    :type hand_type: HandType
+    :ivar flush: Indicates whether the hand is a flush.
+    :type flush: bool
+    :ivar straight: Indicates whether the hand is a straight.
+    :type straight: bool
+    """
     hand_str: str
     cards: list[Card]
     rank_count: Counter
-    sorted_count: list[int]
     ranks_descending_importance: list[int]
     hand_type: HandType
     flush: bool
@@ -27,7 +49,6 @@ class Hand:
         self.flush = self.is_flush()
         self.straight = self.is_straight()
         self.rank_count = Counter([card.rank for card in self.cards])
-        self.sorted_count = sorted(self.rank_count.values(), reverse=True)
         self.ranks_descending_importance = [rank for rank in sorted(self.rank_count, key=lambda k: (self.rank_count[k], k), reverse=True)]
         self.hand_type = self.get_hand_type()
 
@@ -39,10 +60,12 @@ class Hand:
         if self.flush and self.straight:
             return HandType.STRAIGHT_FLUSH
 
-        if self.sorted_count[0] == 4:
+        sorted_count = sorted(self.rank_count.values(), reverse=True)
+
+        if sorted_count[0] == 4:
             return HandType.FOUR
 
-        if self.sorted_count[0] == 3 and self.sorted_count[1] == 2:
+        if sorted_count[0] == 3 and sorted_count[1] == 2:
             return HandType.FULL_HOUSE
 
         if self.flush:
@@ -51,11 +74,11 @@ class Hand:
         if self.straight:
             return HandType.STRAIGHT
 
-        if self.sorted_count[0] == 3:
+        if sorted_count[0] == 3:
             return HandType.THREE
 
-        if self.sorted_count[0] == 2:
-            if self.sorted_count[1] == 2:
+        if sorted_count[0] == 2:
+            if sorted_count[1] == 2:
                 return HandType.TWO_PAIR
             return HandType.PAIR
 
