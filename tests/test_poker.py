@@ -47,6 +47,11 @@ class TestPoker(unittest.TestCase):
             best_hand(["4S 2H 6S 2D JH", "2S 4H 6C 4D JD"]), ["2S 4H 6C 4D JD"]
         )
 
+    def test_higher_pair_beats_lower_pair(self):
+        self.assertEqual(
+            best_hand(["5S 5H 6S 8D JH", "2S 2H 6C 8C JD"]), ["5S 5H 6S 8D JH"]
+        )
+
     def test_both_hands_have_the_same_pair_high_card_wins(self):
         self.assertEqual(
             best_hand(["4H 4S AH JC 3D", "4C 4D AS 5D 6C"]), ["4H 4S AH JC 3D"]
@@ -80,7 +85,7 @@ class TestPoker(unittest.TestCase):
             self,
     ):
         self.assertEqual(
-            best_hand(["6S 6H 3S 3H AS", "7H 7S 2H 2S AC"]), ["7H 7S 2H 2S AC"]
+            best_hand(["6S 6H 3S 3H AS", "7H 7S 2H 2S KC"]), ["7H 7S 2H 2S KC"]
         )
 
     def test_two_pairs_first_ranked_by_largest_pair(self):
@@ -214,3 +219,24 @@ class TestPoker(unittest.TestCase):
         self.assertEqual(
             best_hand(["2H 3H 4H 5H 6H", "4D AD 3D 2D 5D"]), ["2H 3H 4H 5H 6H"]
         )
+
+    def test_royal_flush_beats_straight_flush(self):
+        self.assertEqual(
+            best_hand(["2H 3H 4H 5H 6H", "10S JS QS KS AS"]), ["10S JS QS KS AS"]
+        )
+
+    def test_royal_flush_tie(self):
+        self.assertEqual(
+            best_hand(["10H JH QH KH AH", "10S JS QS KS AS"]),
+            ["10H JH QH KH AH", "10S JS QS KS AS"],
+        )
+
+    def test_invalid_hand_format(self):
+        with self.assertRaises(ValueError):
+            best_hand(["Invalid Hand Format"])
+
+    def test_empty_hand_list(self):
+        with self.assertRaises(ValueError):
+            best_hand([])
+
+

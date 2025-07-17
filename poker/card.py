@@ -23,8 +23,8 @@ class Card:
         return f"Card(rank={self.rank}, suit={self.suit!r})"
 
     def __init__(self, card_str: str):
-        if len(card_str) < 2:
-            raise ValueError("Card must be at least 2 characters")
+        if len(card_str) < 2 or len(card_str) > 3:
+            raise ValueError("Card string must be exactly two or three characters long")
 
         self.suit = card_str[len(card_str) - 1]
 
