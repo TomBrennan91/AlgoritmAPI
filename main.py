@@ -18,5 +18,5 @@ def get_fibonacci(n: int):
 @app.post("/poker/")
 def best_poker_hand(hands: list[str]):
     result = poker.best_hand(hands)
-    return {"best hand: ", result}
+    return result
 
