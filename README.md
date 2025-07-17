@@ -1,4 +1,5 @@
 ``` markdown
+```
 # AlgoritmAPI
 
 A FastAPI-based REST API that provides various algorithmic functionalities including Fibonacci number calculation and poker hand evaluation.
