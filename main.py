@@ -1,6 +1,7 @@
 
 from fastapi import FastAPI, HTTPException
 from fibonacci import fibonacci
+from isbn.isbn import is_valid
 from poker import poker
 
 app = FastAPI()
@@ -19,4 +20,8 @@ def get_fibonacci(n: int):
 def best_poker_hand(hands: list[str]):
     result = poker.best_hand(hands)
     return result
+
+@app.get("/isbn/{isbn}")
+def validate_isbn(isbn: str):
+    return is_valid(isbn)
 
