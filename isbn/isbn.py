@@ -1,5 +1,3 @@
-
-
 def is_valid(isbn: str):
     """
     Determines whether the provided ISBN-10 string is valid. An ISBN-10 is valid
@@ -32,5 +30,5 @@ def is_valid(isbn: str):
             return False
 
         total += int(c) * multiplier
-        
+
     return total % 11 == 0

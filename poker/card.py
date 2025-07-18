@@ -16,8 +16,8 @@ class Card:
         (e.g., 'H' for Hearts, 'D' for Diamonds, 'C' for Clubs, 'S' for Spades).
     :type suit: str
     """
-    rank : int = 0
-    suit : str = 'X'
+    rank: int = 0
+    suit: str = 'X'
 
     def __repr__(self):
         return f"Card(rank={self.rank}, suit={self.suit!r})"
@@ -27,7 +27,6 @@ class Card:
             raise ValueError("Card string must be exactly two or three characters long")
 
         self.suit = card_str[len(card_str) - 1]
-
 
         if len(card_str) == 3 and card_str[0] == '1' and card_str[1] == '0':
             self.rank = 10
@@ -44,6 +43,3 @@ class Card:
                 self.rank = 12
             elif rank_chr == 'J':
                 self.rank = 11
-
-
-

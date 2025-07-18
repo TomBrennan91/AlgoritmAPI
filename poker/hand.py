@@ -3,6 +3,7 @@ from collections import Counter
 from poker.card import Card
 from poker.hand_type import HandType
 
+
 class Hand:
     """
     Represents a poker hand and provides functionalities to evaluate its type and characteristics.
@@ -49,9 +50,10 @@ class Hand:
         self.flush = self.is_flush()
         self.straight = self.is_straight()
         self.rank_count = Counter([card.rank for card in self.cards])
-        self.ranks_descending_importance = [rank for rank in sorted(self.rank_count, key=lambda k: (self.rank_count[k], k), reverse=True)]
+        self.ranks_descending_importance = [rank for rank in
+                                            sorted(self.rank_count, key=lambda k: (self.rank_count[k], k),
+                                                   reverse=True)]
         self.hand_type = self.get_hand_type()
-
 
     def get_hand_type(self) -> HandType:
         """

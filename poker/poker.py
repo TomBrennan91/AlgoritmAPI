@@ -1,5 +1,6 @@
 from poker.hand import Hand
 
+
 def best_hand(hands_str: list[str]) -> list[str]:
     """
     Determine the strongest hand(s) from a list of poker hand strings.
@@ -24,7 +25,8 @@ def best_hand(hands_str: list[str]) -> list[str]:
     else:
         return determine_tie_winner(best_hands)
 
-def determine_tie_winner(best_hands : list[Hand]) -> list[str]:
+
+def determine_tie_winner(best_hands: list[Hand]) -> list[str]:
     """
     Determines the winner(s) among a list of Hands that have achieved the same hand type.
     In case of a tie, it compares ranks in descending importance to find the hand(s) with
@@ -59,4 +61,3 @@ def determine_tie_winner(best_hands : list[Hand]) -> list[str]:
 
     # if we have reached here, we have multiple hands of the same type and identical rankings of cards.
     return [hand.hand_str for hand in best_hands]
-
