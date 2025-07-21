@@ -1,5 +1,3 @@
-from collections import Counter
-
 from poker.card import Card
 from poker.hand_type import HandType
 

@@ -1,6 +1,3 @@
-from enum import Enum
-
-
 class HandType(Enum):
     HIGH_CARD = 1
     PAIR = 2
