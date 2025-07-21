@@ -24,4 +24,3 @@ def best_poker_hand(hands: list[str]):
 @app.get("/isbn/{isbn}")
 def validate_isbn(isbn: str):
     return is_valid(isbn)
-

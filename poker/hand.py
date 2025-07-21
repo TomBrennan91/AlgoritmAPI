@@ -30,7 +30,7 @@ class Hand:
     cards: list[Card]
     rank_count: Counter
     ranks_descending_importance: list[int]
-    hand_type: HandType
+    hand_type: int
     flush: bool
     straight: bool
 
@@ -53,7 +53,7 @@ class Hand:
                                                    reverse=True)]
         self.hand_type = self.get_hand_type()
 
-    def get_hand_type(self) -> HandType:
+    def get_hand_type(self) -> int:
         """
         :return: an Enum representing the strongest poker category that the hand conforms to.
         """
