@@ -17,9 +17,8 @@ def is_valid(isbn: str):
         return False
 
     total = 0
-    for i in range(len(isbn)):
+    for i, c in enumerate(isbn):
         multiplier = 10 - i
-        c = isbn[i]
 
         # it's valid to use X to mean "10" as the last digit in the ISBN
         if c == 'X' and multiplier == 1:
